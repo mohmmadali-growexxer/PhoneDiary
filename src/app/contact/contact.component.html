@@ -1,0 +1,53 @@
+<div class="container mt-4 " >
+  <h1>Contact List</h1>
+  <table class="table table-striped">
+    <thead class="thead-dark">
+    <tr class="table-active">
+      <th scope="col">Index</th>
+      <th scope="col">Name</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+      <th scope="col">Gender</th>
+      <th scope="col">Birth Date</th>
+      <th scope="col">Age</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let contact of contacts; let i = index">
+      <td>{{i +1}}</td>
+      <td>
+        <ng-container *ngIf="!editMode[i]; else editName">
+          {{ contact.name | uppercase}}
+        </ng-container>
+        <ng-template #editName>
+          <input *ngIf="editMode[i]" type="text" [(ngModel)]="contacts[i].name" class="form-control" />
+        </ng-template>
+      </td>
+      <td>
+        <ng-container *ngIf="!editMode[i]; else editPhone">
+          {{ contact.phone }}
+        </ng-container>
+        <ng-template #editPhone>
+          <input *ngIf="editMode[i]" type="text" [(ngModel)]="contacts[i].phone" class="form-control" />
+        </ng-template>
+      </td>
+      <td>{{ contact.email }}</td>
+      <td [appGenderStyle]="contact.gender">{{ contact.gender }}</td>
+      <td>{{ contact.birthDate | date:"dd MMM YYYY" }}</td>
+      <td>{{ contact.birthDate| age  }}</td>
+      <td>
+        <button class="btn btn-primary" *ngIf="!editMode[i]" (click)="onEdit(i)">Edit</button>
+        <button class="btn btn-success" *ngIf="editMode[i]" (click)="onUpdate(i)">Update</button>
+        <button class="btn btn-secondary" *ngIf="editMode[i]" (click)="onCancelEdit(i)">Cancel</button>
+      </td>
+      <td>
+        <button class="btn btn-danger" (click)="onDelete(i)">Delete</button>
+      </td>
+    </tr>
+
+
+    </tbody>
+  </table>
+</div>
